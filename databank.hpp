@@ -1,13 +1,21 @@
 #ifndef DATABANK_HPP
 #define DATABANK_HPP
+
 /* 
 Author: Brion Lang
 Github: ewwoner
 email: ewoner@gmail.com
 
-File Version: 0.0.0.a -- Initial posting. 
+File Version: 0.0.0.b -- Initial posting.
+
+Change Log: 0.0.0.b:
+- added #include <optional>
+
+Initial version: 0.0.0.a
 */
+
 #include <map>
+#include <optional>
 #include <string>
 
 namespace ewoner {
@@ -29,7 +37,7 @@ public:
             return add( key, value );
         }
     }
-    std::optional<Vtype> get(const  Ktype & key ) {
+    std::optional<Vtype> get(const  Ktype & key ) const {
        return ( bank.find( key ) != bank.end() ?  std::optional<Vtype>{bank.at( key )} :  std::nullopt );
     }
     std::optional<Vtype> add( const Ktype & key, const Vtype & value ){
@@ -39,7 +47,7 @@ public:
         auto rv = bank.find( key );
         Vtype value;
         if ( rv != bank.end() ) {
-            value = (*rv).second;
+            value = rv->second;
         }
         else {
             return std::nullopt;
@@ -56,8 +64,20 @@ public:
     auto begin() noexcept {
         return bank.begin();
     }
+    auto begin() const noexcept {
+        return bank.begin();
+    }
+    auto cbegin() const noexcept {
+        return bank.cbegin();
+    }
     auto end() noexcept {
         return bank.end();
+    }
+    auto end() const noexcept {
+        return bank.end();
+    }
+    auto cend() const noexcept {
+        return bank.cend();
     }
     std::optional<int> getAsInt( const Ktype & key ) const noexcept{
         if ( has( key ) == false ) {
